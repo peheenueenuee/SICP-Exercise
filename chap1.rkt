@@ -54,3 +54,9 @@
   (< (abs (- (square guess) x)) 0.001))
 (define (mysqrt x)
   (sqrt-Iter 1.0 x))
+
+;(1.6)
+;Alyssa P. Hacker, Eva Lu Ator
+(define (new-if predicate then-clause else-clause)
+  (cond (predicate then-clause)
+        (else else-clause)))
