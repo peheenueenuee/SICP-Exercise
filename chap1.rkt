@@ -60,3 +60,25 @@
 (define (new-if predicate then-clause else-clause)
   (cond (predicate then-clause)
         (else else-clause)))
+
+;(1.7)
+(define (good-enough?-2 guess pre-guess x)
+  (< (abs (- pre-guess guess)) 0.01))
+(define (sqrt-Iter-2 guess pre-guess x)
+  (if (good-enough?-2 guess pre-guess x)
+      guess
+      (sqrt-Iter (improve guess x) guess x)))
+(define (mysqrt-2 x)
+  (sqrt-Iter-2 1.0 0.0 x))
+
+;(1.8)
+(define (improve-cube guess x)
+  (/ (+ (/ x (square guess)) (* 2 guess)) 3))
+(define (cbrt-Iter guess pre-guess x)
+  (display guess)
+  (display "   ")
+  (if (good-enough?-2 guess pre-guess x)
+      guess
+      (cbrt-Iter (improve-cube guess x) guess x)))
+(define (cbrt x)
+  (cbrt-Iter (improve-cube 1.0 x) 1.0 x))
