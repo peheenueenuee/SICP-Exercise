@@ -114,3 +114,10 @@
 (define (fib n)
   (cond ((=< n 2) 1)
         (else (+ (fib (dec n)) (fib (dec (dec n)))))))
+; phi = (1 + sqrt5)/2
+; phi^2 = phi + 1
+; phi^n = (fib n)*phi + (fib (dec n))
+; psi = (1 - sqrt5)/2
+; psi^n = (fib n)*psi + (fib (dec n))
+; phi - psi = sqrt5
+; (phi^n - psi^n) / sqrt5 = (fib n)
