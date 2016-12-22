@@ -121,3 +121,56 @@
 ; psi^n = (fib n)*psi + (fib (dec n))
 ; phi - psi = sqrt5
 ; (phi^n - psi^n) / sqrt5 = (fib n)
+
+;(1.14)
+(define (count-change amount)
+  (define (cc remain-amount kinds-of-coin)
+    (define (first-denomination koc)
+      (cond ((= koc 1) 1)
+            ((= koc 2) 5)
+            ((= koc 3) 10)
+            ((= koc 4) 50)
+            ((= koc 5) 25)))
+            ;((= koc 6) 500)))
+    (cond ((= remain-amount 0) 1)
+          ((or (< remain-amount 0) (= kinds-of-coin 0)) 0)
+          (else (+ (cc remain-amount (dec kinds-of-coin))
+                   (cc (- remain-amount 
+                          (first-denomination kinds-of-coin)) 
+                       kinds-of-coin)))))
+  (cc amount 5))
+; Steps and Calculate-Space-Size order, how big?
+; (no idea)
+
+;(1.15)
+(define (cube x) (* x x x))
+(define (my-sin angle)
+  (define (p x) 
+    (- (* 3.0 x) (* 4.0 (cube x))))
+  (if (not (> (abs angle) 0.1))
+      angle
+      (p (my-sin (/ angle 3.0)))))
+
+;(1.15a) 
+;> (/ 12.15 3.0)
+;4.05
+;> (/ 4.05 3.0)
+;1.3499999999999999
+;> (/ 1.35 3.0)
+;0.45
+;> (/ 0.45 3.0)
+;0.15
+;> (/ 0.15 3.0)
+;0.049999999999999996
+
+;(1.15b)
+; Step : Linear( 1/30 * a ) -> Log3(a) --http://sicp.iijlab.net/solution/ex1.2.html
+; Space : 1
+
+;(1.16)
+(define (fast-expt a n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt a (/ n 2))))
+        (else (* a (fast-expt a (dec n))))))
+
+  
