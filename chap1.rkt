@@ -168,9 +168,43 @@
 ; Space : 1
 
 ;(1.16)
+; recursion
 (define (fast-expt a n)
   (cond ((= n 0) 1)
         ((even? n) (square (fast-expt a (/ n 2))))
         (else (* a (fast-expt a (dec n))))))
+; loop
+(define (fast-expt2 base power)
+  (define (fast-expt-loop a n odd-parts)
+    (cond ((= n 0) 1)
+        ((= n 1) (* a odd-parts))
+        ((even? n) (fast-expt-loop (square a) (/ n 2) odd-parts))
+        (else (fast-expt-loop a (dec n) (* a odd-parts)))))
+  (fast-expt-loop base power 1))
 
-  
+ ;(1.17),(1.18)
+(define (double a) (+ a a))
+(define (halve a)
+  (cond ((even? a) (/ a 2))
+        (else (halve (dec a)))))
+(define (multiply left right)
+  (define (multiply-loop a b odd-parts)
+    (cond ((= b 0) 0)
+          ((= b 1) (+ a odd-parts))
+          ((even? b) (multiply-loop (double a) (halve b) odd-parts))
+          (else (multiply-loop a (dec b) (+ a odd-parts)))))
+  (multiply-loop left right 0))
+
+;(1,19)
+(define (fast-fib n)
+  (fib-iter2 1 0 0 1 n))
+(define (fib-iter2 a b p q count)
+    (cond ((= count 0) b)
+          ((even? count) (fib-iter2 a 
+                                    b 
+                                    (+ (square p) (square q)) 
+                                    (+ (square q) (* 2 p q)) 
+                                    (halve count)))
+          (else (fib-iter2 (+ (* b q) (* a q) (* a p)) 
+                          (+ (* b p) (* a q)) 
+                          p q (dec count)))))
