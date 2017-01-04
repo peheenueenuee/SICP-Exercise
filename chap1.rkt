@@ -208,3 +208,10 @@
           (else (fib-iter2 (+ (* b q) (* a q) (* a p)) 
                           (+ (* b p) (* a q)) 
                           p q (dec count)))))
+
+; (1.20)
+(define (mygcd a b)
+  (define (gcd-loop a b k)
+    (if (= b 0) (cons a k)
+      (gcd-loop b (remainder a b) (+ 1 k))))
+  (gcd-loop a b 1))
