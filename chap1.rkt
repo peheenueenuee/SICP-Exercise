@@ -1,3 +1,4 @@
+#lang racket
 ;(1.1)
 10
 (+ 5 3 4)
@@ -215,3 +216,13 @@
     (if (= b 0) (cons a k)
       (gcd-loop b (remainder a b) (+ 1 k))))
   (gcd-loop a b 1))
+
+; (1.21)
+(define (inc a) (+ a 1))
+(define (divides? a b) (= 0 (remainder a b)))
+(define (smallest-divisor n) 
+  (define (find-divisor test-divisor)
+                (cond ((> (square test-divisor) n) n)
+                      ((divides? n test-divisor) test-divisor)
+                      (else (find-divisor (inc test-divisor)))))
+  (find-divisor 2))
