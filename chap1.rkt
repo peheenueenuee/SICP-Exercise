@@ -249,3 +249,7 @@
     (display "")
     (serch-for-primes (inc n) m)))
 (serch-for-primes 1 10)
+;(serch-for-primes 1000000000 1000000100)       ; 10^10, 4 ms
+;(serch-for-primes 10000000000 10000000100)     ; 10^11, 12 ms 
+;(serch-for-primes 100000000000 100000000100)   ; 10^12, 37 ms 
+;(serch-for-primes 1000000000000 1000000000100) ; 10^13, 117 ms
