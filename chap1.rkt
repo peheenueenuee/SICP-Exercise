@@ -221,13 +221,18 @@
 (define (inc a) (+ a 1))
 (define (divides? a b) (= 0 (remainder a b)))
 (define (smallest-divisor n) 
+  (define (next a)
+	(if (= a 2) 3 
+	  (+ a 2)))
   (define (find-divisor test-divisor)
                 (cond ((> (square test-divisor) n) n)
                       ((divides? n test-divisor) test-divisor)
-                      (else (find-divisor (inc test-divisor)))))
+                      (else (find-divisor (next test-divisor)))))
   (find-divisor 2))
 
 ; (1.22)
+; (1.23)
+
 (define (prime? n)
   (= n (smallest-divisor n)))
 
@@ -254,36 +259,5 @@
 ;(serch-for-primes 100000000000 100000000100)   ; 10^12, 37 ms 
 ;(serch-for-primes 1000000000000 1000000000100) ; 10^13, 117 ms
 
-; (1.23)
-(define (fast-smallest-divisor n) 
-  (define (next a)
-	(if (= a 2) 3 
-	  (+ a 2)))
-  (define (find-divisor test-divisor)
-                (cond ((> (square test-divisor) n) n)
-                      ((divides? n test-divisor) test-divisor)
-                      (else (find-divisor (next test-divisor)))))
-  (find-divisor 2))
 
-(define (prime?2 n)
-  (= n (fast-smallest-divisor n)))
 
-(define (fast-start-prime-test n start-time)
-  (define (report-prime elapsed-time)
-        (newline)
-        (display n)
-	(display "***")
-	(display elapsed-time))
-  (if (prime?2 n) 
-	(report-prime (- (current-milliseconds) start-time))
-	(display "")))
-(define (fast-timed-prime-test n)
-  (fast-start-prime-test n (current-milliseconds)))
-
-(define (fast-serch-for-primes n m)
-  (fast-timed-prime-test n)
-  (if (or (= n m) (> n m)) 
-    (display "")
-    (serch-for-primes (inc n) m)))
-(fast-serch-for-primes 1 10)
-;(fast-serch-for-primes 1000000000000 1000000000100) ; 10^13, 117 ms
