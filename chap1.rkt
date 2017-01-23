@@ -232,9 +232,30 @@
 
 ; (1.22)
 ; (1.23)
+; (1.24)
 
 (define (prime? n)
   (= n (smallest-divisor n)))
+
+(define (expmod base expe m)
+  (cond ((= expe 0) 1)
+		((even? expe) 
+		 (remainder
+		   (square (expmod base (/ expe 2) m))
+		   m))
+		(else 
+		  (remainder 
+			(* base (expmod base (dec expe) m)) 
+			m))))
+(define (fermat-test n)
+  (define (try-it a)
+	(= (expmod a n n) a))
+  (try-it (inc (random (dec n)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) true)
+		((fermat-test n) (fast-prime? n (dec times)))
+		(else false)))
 
 (define (start-prime-test n start-time)
   (define (report-prime elapsed-time)
@@ -242,7 +263,7 @@
         (display n)
 	(display "***")
 	(display elapsed-time))
-  (if (prime? n) 
+  (if (fast-prime? n 3) 
 	(report-prime (- (current-milliseconds) start-time))
 	(display "")))
 (define (timed-prime-test n)
@@ -253,11 +274,43 @@
   (if (or (= n m) (> n m)) 
     (display "")
     (serch-for-primes (inc n) m)))
-(serch-for-primes 1 10)
-;(serch-for-primes 1000000000 1000000100)       ; 10^10, 4 ms
-;(serch-for-primes 10000000000 10000000100)     ; 10^11, 12 ms 
+(serch-for-primes 2 10)
+;(serch-for-primes 1000000000 1000000100)       ; 10^10, 4 ms -> 0 ms(w fermat-t)
+;(serch-for-primes 10000000000 10000000100)     ; 10^11, 12 ms -> (w fermat-t, restrict by function random)
 ;(serch-for-primes 100000000000 100000000100)   ; 10^12, 37 ms 
 ;(serch-for-primes 1000000000000 1000000000100) ; 10^13, 117 ms
 
+; (1.25)
+;Alyssa P. Hacker
+; (1.26)
+;Louis Reasoner, Eva Lu Ator
+; (1.27)
+; (prime? 561)
+; (prime? 1105)
+; (prime? 1729)
+; (prime? 2465)
+; (prime? 2821)
+; (prime? 6601)
 
+; (1.28) ?????
+(define (expmod-mr base expe m)
+  (cond ((= expe 0) 1)
+		((even? expe) 
+		 (remainder
+		   (square (expmod-mr base (/ expe 2) m))
+		   m))
+		(else 
+		  (remainder 
+			(* base (expmod-mr base (dec expe) m)) 
+			m))))
+
+(define (miller-rabin-test n)
+  (define (try-it a)
+	(= (expmod a (dec n) n) 1))
+  (try-it (inc (random (dec n)))))
+
+(define (fast-prime-mr? n times)
+  (cond ((= times 0) true)
+		((miller-rabin-test n) (fast-prime-mr? n (dec times)))
+		(else false)))
 
