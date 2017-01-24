@@ -1,0 +1,35 @@
+#lang racket
+
+(define (id x) x)
+(define (square x) (* x x))
+(define (cube x) (* x x x))
+(define (dec n) (- n 1))
+(define (inc n) (+ n 1))
+
+;(1.29)
+(define (sum term a next b)
+  (if (> a b)
+	0
+	(+ (term a)
+	   (sum term (next a) next b))))
+(define (pi-sum a b)
+  (define (pi-term x)
+	(/ 1.0 (* x (+ x 2))))
+  (define (next n)
+	(+ n 4))
+  (sum pi-term a next b))
+(define (integral f a b dx)
+  (define (add-dx x)
+	(+ x dx))
+  (* (sum f (+ a (/ dx 2.0)) add-dx b) dx))
+
+(define (simpson f a b n)
+  (define h (/ (- b a) n))
+  (define (y k)
+	(define y-term (f (+ a (* k h))))
+	(cond ((or (= k 0) (= k n)) y-term)
+		  ((even? k) (* 2.0 y-term))
+		  (else (* 4.0 y-term))))
+  (define sum-y (sum y 0 inc n))
+  (* sum-y (/ h 3.0)))
+
