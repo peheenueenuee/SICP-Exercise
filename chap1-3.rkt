@@ -7,11 +7,13 @@
 (define (inc n) (+ n 1))
 
 ;(1.29)
+;(1.30)
 (define (sum term a next b)
-  (if (> a b)
-	0
-	(+ (term a)
-	   (sum term (next a) next b))))
+  (define (iter a result)
+	(if (> a b)
+		result
+		(iter (next a) (+ result (term a)))))
+  (iter a 0))
 (define (pi-sum a b)
   (define (pi-term x)
 	(/ 1.0 (* x (+ x 2))))
