@@ -35,3 +35,16 @@
   (define sum-y (sum y 0 inc n))
   (* sum-y (/ h 3.0)))
 
+;(1.31)
+(define (product term a next b)
+  (if (> a b) 
+	1
+	(* (term a) (product term (next a) next b))))
+(define (factorial n)
+  (product id 1 inc n))
+(define (pi-product n)
+  (define (pi-term x)
+	(define xt (* 2 x))
+	(/ (square xt) (square (inc xt))))
+  (/ (* 2.0 2.0 n (product pi-term 2.0 inc n)) 9.0))
+
