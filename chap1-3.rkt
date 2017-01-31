@@ -8,12 +8,17 @@
 
 ;(1.29)
 ;(1.30)
+;(1.32)
+(define (accumulate conbiner id-value term a next b)
+  (if (> a b) 
+	id-value
+	(conbiner (term a) (accumulate conbiner id-value term (next a) next b))))
+  
 (define (sum term a next b)
-  (define (iter a result)
-	(if (> a b)
-		result
-		(iter (next a) (+ result (term a)))))
-  (iter a 0))
+  (accumulate + 0 term a next b))
+(define (product term a next b)
+  (accumulate * 1 term a next b))
+
 (define (pi-sum a b)
   (define (pi-term x)
 	(/ 1.0 (* x (+ x 2))))
@@ -36,10 +41,6 @@
   (* sum-y (/ h 3.0)))
 
 ;(1.31)
-(define (product term a next b)
-  (if (> a b) 
-	1
-	(* (term a) (product term (next a) next b))))
 (define (factorial n)
   (product id 1 inc n))
 (define (pi-product n)
