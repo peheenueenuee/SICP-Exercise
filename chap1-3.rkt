@@ -10,9 +10,11 @@
 ;(1.30)
 ;(1.32)
 (define (accumulate conbiner id-value term a next b)
-  (if (> a b) 
-	id-value
-	(conbiner (term a) (accumulate conbiner id-value term (next a) next b))))
+  (define (iter x result) 
+	(if (> x b) 
+	  result
+	  (iter (next x) (conbiner result (term x)))))
+  (iter a id-value))
   
 (define (sum term a next b)
   (accumulate + 0 term a next b))
