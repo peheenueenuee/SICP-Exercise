@@ -10,12 +10,12 @@
 ;(1.30)
 ;(1.32)
 (define (accumulate conbiner id-value term a next b)
-  (define (iter x result) 
-	(if (> x b) 
+  (define (iter x result)
+	(if (> x b)
 	  result
 	  (iter (next x) (conbiner result (term x)))))
   (iter a id-value))
-  
+
 (define (sum term a next b)
   (accumulate + 0 term a next b))
 (define (product term a next b)
@@ -51,3 +51,41 @@
 	(/ (square xt) (square (inc xt))))
   (/ (* 2.0 2.0 n (product pi-term 2.0 inc n)) 9.0))
 
+;(1.33)
+(define (filterd-accumulate conbiner id-value filterf term a next b)
+  (define (iter x result)
+    (if (> x b)
+        result
+        (if (filterf x) (iter (next x) (conbiner result (term x)))
+            (iter (next x) result))))
+  (iter a id-value))
+
+(define (expmod-mr base expe m)
+  (cond ((= expe 0) 1)
+        ((even? expe) 
+         (remainder
+          (square (expmod-mr base (/ expe 2) m))
+          m))
+        (else 
+         (remainder 
+          (* base (expmod-mr base (dec expe) m)) 
+          m))))
+(define (miller-rabin-test n)
+  (define (try-it a)
+    (= (expmod-mr a (dec n) n) 1))
+  (try-it (inc (random (dec n)))))
+(define (fast-prime-mr? n times)
+  (cond ((= times 0) true)
+        ((miller-rabin-test n) (fast-prime-mr? n (dec times)))
+        (else false)))
+(define (prime? n)
+  (fast-prime-mr? n 20))
+
+(prime? 31)
+(filterd-accumulate + 0 prime? square 2 inc 10)
+
+(define (mygcd a b)
+  (define (gcd-loop a b k)
+    (if (= b 0) (cons a k)
+        (gcd-loop b (remainder a b) (+ 1 k))))
+  (gcd-loop a b 1))
