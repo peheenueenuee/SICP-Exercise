@@ -95,7 +95,17 @@
   (define (coprime-with-n? x) (coprime? n x))
   (filterd-accumulate * 1 coprime-with-n? id 2 inc n))
 
+;(1.34)
+(define tolerance 0.00001)
+(define (fixed-point f first-guess)
+  (define (try guess)
+   (define (close-enough? v1 v2) (< (abs (- v1 v2)) tolerance))
+   (let ((next (f guess)))
+   (if (close-enough? guess next)
+       next
+       (try next))))
+  (try first-guess))
 
-(products-lt-coprime 36)
-(* 1 5 7 11 13 17 19 23 25 29 31 35)
+(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0)
+(/ (+ 1 (sqrt 5)) 2)
 (products-lt-coprime 10)
