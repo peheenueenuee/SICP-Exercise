@@ -5,6 +5,7 @@
 (define (cube x) (* x x x))
 (define (dec n) (- n 1))
 (define (inc n) (+ n 1))
+(define (average a b) (/ (+ a b) 2))
 
 ;(1.29)
 ;(1.30)
@@ -100,12 +101,16 @@
 (define (fixed-point f first-guess)
   (define (try guess)
    (define (close-enough? v1 v2) (< (abs (- v1 v2)) tolerance))
-   (let ((next (f guess)))
+   (newline)
+   (display guess)
+   (let ((next (average (f guess) guess)))
    (if (close-enough? guess next)
        next
        (try next))))
   (try first-guess))
 
-(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0)
-(/ (+ 1 (sqrt 5)) 2)
-(products-lt-coprime 10)
+;(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0) ;phi
+;(/ (+ 1 (sqrt 5)) 2) ;phi
+
+;(1.35)
+(fixed-point (lambda (x) (/ (log 1000) (log x))) 30.0)
