@@ -97,6 +97,7 @@
   (filterd-accumulate * 1 coprime-with-n? id 2 inc n))
 
 ;(1.34)
+;(1.36)
 (define tolerance 0.00001)
 (define (fixed-point f first-guess)
   (define (try guess)
@@ -110,7 +111,14 @@
   (try first-guess))
 
 ;(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0) ;phi
-;(/ (+ 1 (sqrt 5)) 2) ;phi
+(/ (+ 1 (sqrt 5)) 2) ;phi
 
 ;(1.35)
 (fixed-point (lambda (x) (/ (log 1000) (log x))) 30.0)
+
+;(1.37)
+(define (cont-frac n d k)
+  (if (= k 1) (/ n d)
+      (/ n (+ d (cont-frac n d (dec k))))))
+
+(cont-frac 1.0 1.0 100)
