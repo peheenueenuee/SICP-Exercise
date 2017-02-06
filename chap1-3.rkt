@@ -62,12 +62,12 @@
 
 (define (expmod-mr base expe m)
   (cond ((= expe 0) 1)
-        ((even? expe) 
+        ((even? expe)
          (remainder
           (square (expmod-mr base (/ expe 2) m))
           m))
-        (else 
-         (remainder 
+        (else
+         (remainder
           (* base (expmod-mr base (dec expe) m)) 
           m))))
 (define (miller-rabin-test n)
@@ -81,11 +81,21 @@
 (define (prime? n)
   (fast-prime-mr? n 20))
 
-(prime? 31)
-(filterd-accumulate + 0 prime? square 2 inc 10)
-
 (define (mygcd a b)
-  (define (gcd-loop a b k)
-    (if (= b 0) (cons a k)
-        (gcd-loop b (remainder a b) (+ 1 k))))
-  (gcd-loop a b 1))
+  (define (gcd-loop gtn ltn k)
+    (if (= ltn 0) gtn
+        (gcd-loop ltn (remainder gtn ltn) (+ 1 k))))
+  (if (> a b) (gcd-loop a b 1)
+      (gcd-loop b a 1)))
+
+(define (coprime? a b)
+  (= 1 (mygcd a b)))
+
+(define (products-lt-coprime n)
+  (define (coprime-with-n? x) (coprime? n x))
+  (filterd-accumulate * 1 coprime-with-n? id 2 inc n))
+
+
+(products-lt-coprime 36)
+(* 1 5 7 11 13 17 19 23 25 29 31 35)
+(products-lt-coprime 10)
