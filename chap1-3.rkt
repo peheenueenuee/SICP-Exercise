@@ -1,4 +1,3 @@
-#lang racket
 
 (define (id x) x)
 (define (square x) (* x x))
@@ -128,5 +127,25 @@
   (iter (/ n d) k))
 
 (cont-frac 1.0 1.0 100)
-(cont-frac 1.0 1.0 100)
 (cont-frac-iter 1.0 1.0 100)
+
+;(1.38)
+(define (di n k)
+  (define (iter i)
+    (if (=  2 (remainder i 3)) (* 2 (inc (quotient i 3)))
+        1))
+  (newline)
+  (display (iter n))
+  (if (= k 1) (newline)
+      (di (inc n) (dec k))))
+
+(define (euler-napier k)
+  (define (di i)
+    (if (= 2 (remainder i 3))
+                  (* 2.0 (inc (quotient i 3.0)))
+                  1.0))
+  (define (iter result i)
+    (let ((next (/ 1.0 (+ (di i) result))))
+      (if (= i 1) next
+          (iter next (dec i)))))
+  (iter (/ 1.0 (di k)) k))
