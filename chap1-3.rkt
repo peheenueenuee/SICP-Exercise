@@ -110,15 +110,18 @@
   (try first-guess))
 
 ;(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0) ;phi
-(/ (+ 1 (sqrt 5)) 2) ;phi
+;(/ (+ 1 (sqrt 5)) 2) ;phi
 
 ;(1.35)
-(fixed-point (lambda (x) (/ (log 1000) (log x))) 30.0)
+;(fixed-point (lambda (x) (/ (log 1000) (log x))) 30.0)
 
 ;(1.37)
-(define (cont-frac n d k)
-  (if (= k 1) (/ n d)
-      (/ n (+ d (cont-frac n d (dec k))))))
+(define (cont-frac ni di i k)
+  (let ((n (ni k))
+        (d (di k)))
+    (if (= k i) (/ n d)
+        (/ n (+ d (cont-frac ni di (inc i) (dec k)))))))
+
 (define (cont-frac-iter n d k)
   (define (iter result times)
     (let ((next (/ n (+ d result))))
@@ -126,8 +129,10 @@
           (iter next (dec times)))))
   (iter (/ n d) k))
 
-(cont-frac 1.0 1.0 100)
-(cont-frac-iter 1.0 1.0 100)
+;(cont-frac (lambda (i) 1.0)
+;           (lambda (i) 1.0)
+;           1 100)
+;(cont-frac-iter 1.0 1.0 100)
 
 ;(1.38)
 (define (di n k)
