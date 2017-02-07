@@ -120,5 +120,12 @@
 (define (cont-frac n d k)
   (if (= k 1) (/ n d)
       (/ n (+ d (cont-frac n d (dec k))))))
+(define (cont-frac-iter n d k)
+  (define (iter result times)
+    (let ((next (/ n (+ d result))))
+      (if (= times 1) next
+          (iter next (dec times)))))
+  (iter (/ n d) k))
 
 (cont-frac 1.0 1.0 100)
+(cont-frac-iter 1.0 1.0 100)
