@@ -128,4 +128,5 @@
   (iter (/ n d) k))
 
 (cont-frac 1.0 1.0 100)
+(cont-frac 1.0 1.0 100)
 (cont-frac-iter 1.0 1.0 100)
