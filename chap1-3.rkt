@@ -117,10 +117,10 @@
 
 ;(1.37)
 (define (cont-frac ni di i k)
-  (let ((n (ni k))
-        (d (di k)))
+  (let ((n (ni i))
+        (d (di i)))
     (if (= k i) (/ n d)
-        (/ n (+ d (cont-frac ni di (inc i) (dec k)))))))
+        (/ n (+ d (cont-frac ni di (inc i) k))))))
 
 (define (cont-frac-iter n d k)
   (define (iter result times)
