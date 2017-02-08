@@ -149,8 +149,7 @@
     (if (= 2 (remainder i 3))
                   (* 2.0 (inc (quotient i 3.0)))
                   1.0))
-  (define (iter result i)
-    (let ((next (/ 1.0 (+ (di i) result))))
-      (if (= i 1) next
-          (iter next (dec i)))))
-  (iter (/ 1.0 (di k)) k))
+  (cont-frac (lambda (i) 1.0)
+             di
+             1
+             k))
