@@ -189,4 +189,4 @@
 ;(1.43)
 (define (repeated f n)
   (if (or (< n 1) (= n 1)) (lambda (x) (f x))
-      (lambda (x) (f ((repeated f (dec n)) x)))))
+      (compose f (repeated f (dec n)))))
