@@ -153,3 +153,12 @@
              di
              1
              k))
+
+;(1.39)
+(define (lambert-tan x k)
+  (define (ni i)
+    (if (= i 1) x
+        (- (square x))))
+  (define (di i)
+    (dec (* 2.0 i)))
+  (cont-frac ni di 1 k))
