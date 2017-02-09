@@ -196,3 +196,14 @@
     (define (next x) (+ x dx))
     (define (prev x) (- x dx))
     (lambda (x) (/ (+ (f x) (f (next x)) (f (prev x))) 3))))
+
+;(1.45)
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+
+(define (sq-root x)
+  (fixed-point (average-damp (lambda (y) (/ x y)))
+               1.0))
+(define (cube-root x)
+  (fixed-point (average-damp (lambda (y) (/ x (square y))))
+               1.0))
