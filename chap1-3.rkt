@@ -9,6 +9,9 @@
   (cond ((= n 0) 1)
         ((even? n) (square (pow a (/ n 2))))
         (else (* a (pow a (dec n))))))
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+
 
 ;(1.29)
 ;(1.30)
@@ -114,16 +117,18 @@
        (try next))))
   (try first-guess))
 
-(define (117sqrt x)
-  (define (improve y)
-    (average y (/ x y)))
-  (define (good-enough? guess)
-    (< (abs (- x (square guess))) tolerance))
-  (define (sqrt-iter guess)
-    (if (good-enough? guess)
-        guess
-        (sqrt-iter (improve guess))))
-  (sqrt-iter 1.0))
+(define (iterative-improve improve-proc first-guess)
+  (define (close-enough? v1 v2) (< (abs (- v1 v2)) tolerance))
+  (define (iter guess)
+    (let ((next (improve-proc guess)))
+      (if (close-enough? guess next)
+          next
+          (iter next))))
+  (iter first-guess))
+
+(define (sqrt117 x)
+  (iterative-improve (average-damp (lambda (y) (/ x y)))
+                     1.0))
 
 ;(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0) ;phi
 ;(/ (+ 1 (sqrt 5)) 2) ;phi
@@ -214,9 +219,6 @@
     (lambda (x) (/ (+ (f x) (f (next x)) (f (prev x))) 3))))
 
 ;(1.45)
-(define (average-damp f)
-  (lambda (x) (average x (f x))))
-
 (define (sq-root x)
   (fixed-point (average-damp (lambda (y) (/ x y)))
                1.0))
