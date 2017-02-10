@@ -212,7 +212,12 @@
   (fixed-point (average-damp (lambda (y) (/ x (square y))))
                1.0))
 
-(define (n-power-root n x average-repeat)
+(define (n-power-root n x)
+  (define (average-repeat-iter m k)
+    (if (< m (pow 2 k)) k
+           (average-repeat-iter m (inc k))))
+  (define average-repeat
+    (average-repeat-iter n 1))
   (fixed-point ((repeated average-damp average-repeat)
                 (lambda (y) (/ x (pow y (dec n)))))
                1.0))
