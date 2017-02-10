@@ -106,7 +106,7 @@
 ;(1.36)
 ;(1.46)
 (define tolerance 0.000001)
-(define (fixed-point f first-guess)
+(define (fixed-point-with-print f first-guess)
   (define (try guess)
    (define (close-enough? v1 v2) (< (abs (- v1 v2)) tolerance))
    (newline)
@@ -117,18 +117,23 @@
        (try next))))
   (try first-guess))
 
-(define (iterative-improve improve-proc first-guess)
-  (define (close-enough? v1 v2) (< (abs (- v1 v2)) tolerance))
+(define (iterative-improve improve-proc good-enough? first-guess)
   (define (iter guess)
     (let ((next (improve-proc guess)))
-      (if (close-enough? guess next)
+      (if (good-enough? guess)
           next
           (iter next))))
   (iter first-guess))
 
 (define (sqrt117 x)
   (iterative-improve (average-damp (lambda (y) (/ x y)))
+                     (lambda (y) (< (abs (- x (square y))) tolerance))
                      1.0))
+
+(define (fixed-point f first-guess)
+  (iterative-improve f
+                     (lambda (v) (< (abs (- v (f v))) tolerance))
+                     first-guess))
 
 ;(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0) ;phi
 ;(/ (+ 1 (sqrt 5)) 2) ;phi
