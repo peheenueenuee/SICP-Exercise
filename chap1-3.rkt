@@ -5,6 +5,10 @@
 (define (dec n) (- n 1))
 (define (inc n) (+ n 1))
 (define (average a b) (/ (+ a b) 2))
+(define (pow a n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (pow a (/ n 2))))
+        (else (* a (pow a (dec n))))))
 
 ;(1.29)
 ;(1.30)
@@ -103,7 +107,7 @@
    (define (close-enough? v1 v2) (< (abs (- v1 v2)) tolerance))
    (newline)
    (display guess)
-   (let ((next (average (f guess) guess)))
+   (let ((next (f guess)))
    (if (close-enough? guess next)
        next
        (try next))))
@@ -206,4 +210,9 @@
                1.0))
 (define (cube-root x)
   (fixed-point (average-damp (lambda (y) (/ x (square y))))
+               1.0))
+
+(define (n-power-root n x average-repeat)
+  (fixed-point ((repeated average-damp average-repeat)
+                (lambda (y) (/ x (pow y (dec n)))))
                1.0))
