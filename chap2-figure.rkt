@@ -17,7 +17,31 @@
     (make-segment (average (x-coodinate sp) (x-coodinate ep))
                   (average (y-coodinate sp) (y-coodinate ep)))))
 
+;(2.3)
+(define (greater-one a b) (if (< a b) b a))
+(define (lesser-one a b) (if (< a b) a b))
+
+(define (make-rectangle-by-2point point-a point-b)
+  (define (make-rectangle top-left-point bottom-right-point)
+    (cons top-left-point bottom-right-point))
+  (make-rectangle (make-point
+                   (lesser-one (x-coodinate point-a) (x-coodinate point-b))
+                   (greater-one (y-coodinate point-a) (y-coodinate point-b)))
+                  (make-point
+                   (greater-one (x-coodinate point-a) (x-coodinate point-b))
+                   (lesser-one (y-coodinate point-a) (y-coodinate point-b)))))
+(define (top-left rectangle)
+  (car rectangle))
+(define (bottom-right rectangle)
+  (cdr rectangle))
+(define (top-right rectangle)
+  (make-point (x-coodinate (bottom-right rectangle))
+              (y-coodinate (top-left rectangle))))
+(define (bottom-left rectangle)
+  (make-point (x-coodinate (top-left rectangle))
+              (y-coodinate (bottom-right rectangle))))
+
 (define point-alpha (make-point 1 3))
 (define point-beta (make-point 3 7))
 (define segA (make-segment point-alpha point-beta))
-
+(define recA (make-rectangle-by-2point point-alpha point-beta))
