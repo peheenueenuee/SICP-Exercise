@@ -1,3 +1,7 @@
+(define (greater-one a b) (if (< a b) b a))
+(define (lesser-one a b) (if (< a b) a b))
+(define (square x) (* x x))
+
 ;(2.2)
 (define (make-point x y)
   (cons x y))
@@ -16,11 +20,16 @@
         (ep (end-point segment)))
     (make-segment (average (x-coodinate sp) (x-coodinate ep))
                   (average (y-coodinate sp) (y-coodinate ep)))))
+(define (length-segment segment)
+  (let ((sp (start-point segment))
+        (ep (end-point segment)))
+    (let ((x-length (abs (- (x-coodinate sp) (x-coodinate ep))))
+          (y-length (abs (- (y-coodinate sp) (y-coodinate ep)))))
+      (if (or (= 0 x-length) (= 0 y-length))
+          (greater-one x-length y-length)
+          (sqrt (+ (square x-length) (square y-length)))))))
 
 ;(2.3)
-(define (greater-one a b) (if (< a b) b a))
-(define (lesser-one a b) (if (< a b) a b))
-
 (define (make-rectangle-by-2point point-a point-b)
   (define (make-rectangle top-left-point bottom-right-point)
     (cons top-left-point bottom-right-point))
@@ -30,6 +39,7 @@
                   (make-point
                    (greater-one (x-coodinate point-a) (x-coodinate point-b))
                    (lesser-one (y-coodinate point-a) (y-coodinate point-b)))))
+
 (define (top-left rectangle)
   (car rectangle))
 (define (bottom-right rectangle)
@@ -40,6 +50,24 @@
 (define (bottom-left rectangle)
   (make-point (x-coodinate (top-left rectangle))
               (y-coodinate (bottom-right rectangle))))
+
+(define (top-segment rectangle)
+  (make-segment (top-left rectangle) (top-right rectangle)))
+(define (bottom-segment rectangle)
+  (make-segment (bottom-left rectangle) (bottom-right rectangle)))
+(define (left-segment rectangle)
+  (make-segment (bottom-left rectangle) (top-left rectangle)))
+(define (right-segment rectangle)
+  (make-segment (top-right rectangle) (bottom-right rectangle)))
+
+(define (circumference-rectangle rectangle)
+  (+ (length-segment (top-segment rectangle))
+     (length-segment (bottom-segment rectangle))
+     (length-segment (right-segment rectangle))
+     (length-segment (left-segment rectangle))))
+(define (area-rectangle rectangle)
+  (* (length-segment (bottom-segment rectangle))
+     (length-segment (left-segment rectangle))))
 
 (define point-alpha (make-point 1 3))
 (define point-beta (make-point 3 7))
