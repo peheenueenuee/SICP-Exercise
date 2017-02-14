@@ -24,7 +24,17 @@
   (iter p 0))
 
 ;(2.6)
+(define (succ x) (+ x 1))
+(define (numberize num) ((num succ) 0))
+
 (define zero (lambda (f) (lambda (x) x)))
 (define (add-1 n) (lambda (f) (lambda (x) (f ((n f) x)))))
 (define one (lambda (f) (lambda (x) (f x))))
 (define two (lambda (f) (lambda (x) (f (f x)))))
+
+(define (adding m n) 
+  (lambda (f) (lambda (x) ((m f) ((n f) x)))))
+(define three (adding one two))
+
+(define (multiplying m n) 
+  (lambda (f) (lambda (x) ((m (n f)) x))))
