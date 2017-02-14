@@ -39,6 +39,10 @@
                   (make-point
                    (greater-one (x-coodinate point-a) (x-coodinate point-b))
                    (lesser-one (y-coodinate point-a) (y-coodinate point-b)))))
+(define (make-rectangle-by-2length width hight)
+  (define (make-rectangle top-left-point bottom-right-point)
+    (cons top-left-point bottom-right-point))
+  (make-rectangle (make-point 0 (abs hight)) (make-point (abs width) 0)))
 
 (define (top-left rectangle)
   (car rectangle))
@@ -73,3 +77,4 @@
 (define point-beta (make-point 3 7))
 (define segA (make-segment point-alpha point-beta))
 (define recA (make-rectangle-by-2point point-alpha point-beta))
+(define recB (make-rectangle-by-2length 15 11))
