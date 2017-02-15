@@ -5,3 +5,11 @@
 (define (lesser-one a b) (if (> a b) b a))
 (define (upper-bound interval) (greater-one (car interval) (cdr interval)))
 (define (lower-bound interval) (lesser-one (car interval) (cdr interval)))
+
+;(2.8)
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
+(define (sub-interval x y)
+  (make-interval (- (lower-bound x) (upper-bound y))
+                 (- (upper-bound x) (lower-bound y))))
