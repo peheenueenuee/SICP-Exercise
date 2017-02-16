@@ -1,3 +1,6 @@
+(define (=< a b) (or (< a b) (= a b)))
+(define (=> a b) (or (> a b) (= a b)))
+
 ;(2.7)
 ;problem related Alyssa P. Hacker
 (define (make-interval a b) (cons a b))
@@ -7,6 +10,9 @@
 (define (lower-bound interval) (lesser-one (car interval) (cdr interval)))
 
 ;(2.8)
+;problem related Alyssa P. Hacker
+;(2.10)
+;problem related Alyssa P. Hacker and Ben Bitdiddle
 (define (add-interval x y)
   (make-interval (+ (lower-bound x) (lower-bound y))
                  (+ (upper-bound x) (upper-bound y))))
@@ -21,9 +27,17 @@
     (make-interval (max p1 p2 p3 p4)
                    (min p1 p2 p3 p4))))
 (define (div-interval x y)
-  (mul-interval x (make-interval (/ 1.0 (upper-bound y))
-                                 (/ 1.0 (lower-bound y)))))
+  (if (and (=< 0 (upper-bound y)) (=> 0 (lower-bound y)))
+      (error "divide-by-zero error")
+      (mul-interval x (make-interval (/ 1.0 (upper-bound y))
+                                     (/ 1.0 (lower-bound y))))))
+;(2.9)
+;problem related Alyssa P. Hacker
+(define (width interval)
+  (/ (abs (- (upper-bound interval) (lower-bound interval))) 2.0))
 
 (define R1 (make-interval 2.1 4.9))
 (define R2 (make-interval 0.32 1.46))
 (define R3 (make-interval (- 1.12) 0.31))
+(define R4 (make-interval 3.0 5.0))
+(define R5 (make-interval 1.0 2.0))
