@@ -41,12 +41,26 @@
       (mul-interval x (make-interval (/ 1.0 (upper-bound y))
                                      (/ 1.0 (lower-bound y))))))
 ;(2.9)
+;(2.12)
 ;problem related Alyssa P. Hacker
+(define (make-center-width c w)
+  (make-interval (+ c w) (- c w)))
+(define (make-center-percent c p)
+  (let ((w (* c (/ p 100))))
+    (make-center-width c w)))
+
+(define (center interval)
+  (/ (+ (upper-bound interval) (lower-bound interval)) 2.0))
 (define (width interval)
   (/ (abs (- (upper-bound interval) (lower-bound interval))) 2.0))
+(define (percent interval)
+  (* (abs (/ (width interval) (center interval))) 100))
 
 (define R1 (make-interval 2.1 4.9))
 (define R2 (make-interval 0.32 1.46))
 (define R3 (make-interval (- 1.12) 0.31))
 (define R4 (make-interval 3.0 5.0))
 (define R5 (make-interval 1.0 2.0))
+(define R6 (make-center-percent 10.0 8))
+(define R7 (make-center-percent 100.0 0.8))
+
