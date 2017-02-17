@@ -74,6 +74,7 @@
 ; ↓ this quest found on stackoverflow. 
 ; http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme
 ; 'this problem called dependency problem...'
+; https://en.wikipedia.org/wiki/Interval_arithmetic#Dependency_problem
 
 (define R1 (make-interval 2.1 4.9))
 (define R2 (make-interval 0.32 1.46))
