@@ -1,3 +1,5 @@
+(define (dec n) (- n 1))
+(define (inc n) (+ n 1))
 ;(2.17)
 (define (last-pair-of-xs xs)
   (if (null? (cdr xs)) (car xs) (last-pair-of-xs (cdr xs))))
@@ -7,3 +9,14 @@
     (if (null? normal) revers
         (iter (cdr normal) (cons (car normal) revers))))
   (iter xs null))
+
+;(2.19)
+(define us-coin (list 50 25 1 5 10))
+(define uk-coin (list 0.5 1 2 5 10 20 50 100))
+(define jp-coin (list 1 5 10 50 100 500))
+
+(define (cc remain-amount kinds-of-coin)
+  (cond ((= remain-amount 0) 1)
+        ((or (< remain-amount 0) (null? kinds-of-coin)) 0)
+        (else (+ (cc remain-amount (cdr kinds-of-coin))
+                 (cc (- remain-amount (car kinds-of-coin)) kinds-of-coin)))))
