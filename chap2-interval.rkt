@@ -56,6 +56,25 @@
 (define (percent interval)
   (* (abs (/ (width interval) (center interval))) 100))
 
+;(2.14)
+;problem related Alyssa P. Hacker and Lem E. Tweakit
+;(2.15)
+;and Eva Lu Ator
+(define (par1 r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+(define (par2 r1 r2)
+  (let ((one (make-interval 1.0 1.0)))
+    (div-interval one
+                  (add-interval (div-interval one r1)
+                                (div-interval one r2)))))
+;(2.16)
+; 不可能なのではないか。人間が書く数式は、いくらでも項の数を増やせるので、
+; それを手続きに書き直した場合、誤差を無限に積み重ねていくことができてしまう...
+; ↓ this quest found on stackoverflow. 
+; http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme
+; 'this problem called dependency problem...'
+
 (define R1 (make-interval 2.1 4.9))
 (define R2 (make-interval 0.32 1.46))
 (define R3 (make-interval (- 1.12) 0.31))
