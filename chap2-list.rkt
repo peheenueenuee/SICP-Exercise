@@ -20,3 +20,14 @@
         ((or (< remain-amount 0) (null? kinds-of-coin)) 0)
         (else (+ (cc remain-amount (cdr kinds-of-coin))
                  (cc (- remain-amount (car kinds-of-coin)) kinds-of-coin)))))
+
+;(2.20)
+(define (same-parity x . xs)
+  (define (parity-filtered-list fil? ls)
+    (if (null? ls) null
+        (if (fil? (car ls))
+            (cons (car ls) (parity-filtered-list  fil? (cdr ls)))
+            (parity-filtered-list fil? (cdr ls)))))
+  (if (even? x) (cons x (parity-filtered-list even? xs))
+      (cons x (parity-filtered-list odd? xs))))
+
