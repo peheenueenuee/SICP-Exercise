@@ -39,3 +39,21 @@
 (define (square-list2 items)
   (map (lambda (x) (* x x)) items))
 
+;(2.22)
+; by Louis Reasoner
+(define (square-list-rev items)
+  (define (iter things answer)
+    (if (null? things) answer
+        (iter (cdr things)
+              (cons ((lambda (x) (* x x)) (car things)) answer))))
+  (iter items null))
+
+(define (square-list-recur items)
+  (define (iter things answer)
+    (if (null? things) answer
+        (iter (cdr things)
+              (cons answer
+                    ((lambda (x) (* x x)) (car things))))))
+  (iter items null))
+
+
