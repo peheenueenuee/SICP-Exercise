@@ -78,3 +78,13 @@
                               result)))
           (else (iter (cdr items) (cons (car items) result)))))
   (iter xs null))
+
+;(2.28)
+(define (fringe xs)
+  (define (iter items result)
+    (cond ((null? items) result)
+          ((pair? (car items))
+           (iter (cdr items)
+                 (append result (iter (car items) null))))
+          (else (iter (cdr items) (append result (list (car items)))))))
+  (iter xs null))
