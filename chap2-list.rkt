@@ -31,3 +31,11 @@
   (if (even? x) (cons x (parity-filtered-list even? xs))
       (cons x (parity-filtered-list odd? xs))))
 
+;(2.21)
+(define (square-list1 items)
+  (if (null? items) null
+      (cons ((lambda (x) (* x x)) (car items))
+            (square-list1 (cdr items)))))
+(define (square-list2 items)
+  (map (lambda (x) (* x x)) items))
+
