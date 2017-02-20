@@ -88,3 +88,28 @@
                  (append result (iter (car items) null))))
           (else (iter (cdr items) (append result (list (car items)))))))
   (iter xs null))
+
+;(2.29)
+; play you a funny mobile
+(define (make-mobile left right)
+  (list left right))
+(define (make-branch branch-length structure)
+  (list branch-length structure))
+(define (left-branch mobile)
+  (car mobile))
+(define (right-branch mobile)
+  (cadr mobile))
+(define (branch-length branch)
+  (car branch))
+(define (branch-structure branch)
+  (cadr branch))
+
+(define (total-weight mobile)
+  (define (branch-weight branch)
+    (let ((wt (branch-structure branch)))
+      (if (pair? wt) (total-weight wt) wt)))
+  (+ (branch-weight (left-branch mobile))
+     (branch-weight (right-branch mobile))))
+
+(define mobA (make-mobile (make-branch 3.0 10.0) (make-branch 2.0 8.0)))
+(define mobB (make-mobile (make-branch 5.0 15.0) (make-branch 3.0 mobA)))
