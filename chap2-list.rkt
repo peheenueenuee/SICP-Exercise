@@ -62,3 +62,8 @@
         (else (proc (car xs))
               (my-for-each proc (cdr xs)))))
 
+;(2.24)
+(define list224 (list 1 (list 2 (list 3 4))))
+;(2.26)
+(define list226x (list 1 2 3))
+(define list226y (list 4 5 6))
