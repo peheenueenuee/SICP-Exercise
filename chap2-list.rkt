@@ -56,4 +56,9 @@
                     ((lambda (x) (* x x)) (car things))))))
   (iter items null))
 
+;(2.23)
+(define (my-for-each proc xs)
+  (cond ((null? xs) null)
+        (else (proc (car xs))
+              (my-for-each proc (cdr xs)))))
 
