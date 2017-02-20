@@ -105,11 +105,19 @@
   (cadr branch))
 
 (define (total-weight mobile)
-  (define (branch-weight branch)
-    (let ((wt (branch-structure branch)))
-      (if (pair? wt) (total-weight wt) wt)))
   (+ (branch-weight (left-branch mobile))
      (branch-weight (right-branch mobile))))
+(define (branch-weight branch)
+  (let ((wt (branch-structure branch)))
+    (if (pair? wt) (total-weight wt) wt)))
+
+(define (balanced? mobile)
+  (= (* (branch-weight (left-branch mobile))
+        (branch-length (left-branch mobile)))
+     (* (branch-weight (right-branch mobile))
+        (branch-length (right-branch mobile)))))
 
 (define mobA (make-mobile (make-branch 3.0 10.0) (make-branch 2.0 8.0)))
 (define mobB (make-mobile (make-branch 5.0 15.0) (make-branch 3.0 mobA)))
+(define mobC (make-mobile (make-branch 2.0 mobA) (make-branch 2.0 mobA)))
+(define mobD (make-mobile (make-branch 2.0 5.0) (make-branch 5.0 2.0)))
