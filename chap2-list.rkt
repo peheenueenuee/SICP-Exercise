@@ -138,3 +138,9 @@
 (define mobB (make-mobile (make-branch 5.0 15.0) (make-branch 3.0 mobA)))
 (define mobC (make-mobile (make-branch 2.0 mobA) (make-branch 2.0 mobA)))
 (define mobD (make-mobile (make-branch 2.0 5.0) (make-branch 5.0 2.0)))
+
+;(2.32)
+(define (subsets s)
+  (if (null? s) (list null)
+      (let ((rest (subsets (cdr s))))
+        (append rest (map (lambda (x) (cons (car s) x)) rest)))))
