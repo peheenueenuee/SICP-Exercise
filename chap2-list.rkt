@@ -32,12 +32,25 @@
       (cons x (parity-filtered-list odd? xs))))
 
 ;(2.21)
+;(2.30)
 (define (square-list1 items)
   (if (null? items) null
       (cons ((lambda (x) (* x x)) (car items))
             (square-list1 (cdr items)))))
 (define (square-list2 items)
   (map (lambda (x) (* x x)) items))
+
+(define (square-tree-nomap tree)
+  (cond ((null? tree) null)
+        ((pair? (car tree)) (cons (square-tree-nomap (car tree))
+                                  (square-tree-nomap (cdr tree))))
+        (else (cons ((lambda (x) (* x x)) (car tree))
+                    (square-tree-nomap (cdr tree))))))
+(define (square-tree tree)
+  (map (lambda (x) (cond ((null? x) null)
+                         ((pair? x) (square-tree x))
+                         (else (* x x))))
+       tree))
 
 ;(2.22)
 ; by Louis Reasoner
@@ -88,6 +101,8 @@
                  (append result (iter (car items) null))))
           (else (iter (cdr items) (append result (list (car items)))))))
   (iter xs null))
+
+
 
 ;(2.29)
 ; play you a funny mobile
