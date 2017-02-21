@@ -33,6 +33,7 @@
 
 ;(2.21)
 ;(2.30)
+;(2.31)
 (define (square-list1 items)
   (if (null? items) null
       (cons ((lambda (x) (* x x)) (car items))
@@ -46,11 +47,12 @@
                                   (square-tree-nomap (cdr tree))))
         (else (cons ((lambda (x) (* x x)) (car tree))
                     (square-tree-nomap (cdr tree))))))
-(define (square-tree tree)
+(define (tree-map proc tree)
   (map (lambda (x) (cond ((null? x) null)
-                         ((pair? x) (square-tree x))
-                         (else (* x x))))
+                         ((pair? x) (tree-map proc x))
+                         (else (proc x))))
        tree))
+(define (square-tree tree) (tree-map (lambda (x) (* x x)) tree))
 
 ;(2.22)
 ; by Louis Reasoner
