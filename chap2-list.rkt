@@ -166,3 +166,15 @@
                 (+ this-coeff (* x higher-terms)))
               0
               coefficient-sequence))
+;(2.35)
+(define (count-leaves tree)
+  (accumulate (lambda (x rightside)
+                (cond ((pair? x) (+ rightside (count-leaves x)))
+                      (else (+ 1 rightside))))
+              0
+              tree))
+;(2.36)
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs)) null
+             (cons (accumulate op init (map car seqs))
+                   (accumulate-n op init (map cdr seqs)))))
