@@ -1,3 +1,5 @@
+(load "number.rkt")
+
 (define (dec n) (- n 1))
 (define (inc n) (+ n 1))
 ;(2.17)
@@ -191,3 +193,13 @@
   (fold-left (lambda (x y) (cons y x)) null seq))
 (define (reverse-by-foldr seq)
   (fold-right (lambda (x y) (append y (list x))) null seq))
+
+(define (pairlist n)
+  (accumulate append null
+   (map (lambda (i)
+          (map (lambda (j)
+                 (list i j))
+               (ennumerate-interval 1 (dec i))))
+        (ennumerate-interval 1 n))))
+(define (flatmap proc seq)
+  (accumulate append null (map proc seq)))
