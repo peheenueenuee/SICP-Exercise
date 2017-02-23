@@ -2,6 +2,9 @@
 (define (inc a) (+ a 1))
 (define (dec a) (- a 1))
 
+(define (=< a b) (or (= a b) (< a b)))
+(define (=> a b) (or (= a b) (> a b)))
+
 (define (ennumerate-interval a b)
   (if (> a b) null
       (cons a (ennumerate-interval (inc a) b))))
