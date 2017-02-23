@@ -178,3 +178,16 @@
   (if (null? (car seqs)) null
              (cons (accumulate op init (map car seqs))
                    (accumulate-n op init (map cdr seqs)))))
+;(2.38)
+(define (fold-left op initial sequence)
+  (define (iter result restseq)
+    (if (null? restseq) result
+        (iter (op result (car restseq)) (cdr restseq))))
+  (iter initial sequence))
+(define (fold-right op initial sequence) (accumulate op initial sequence))
+
+;(2.39)
+(define (reverse-by-foldl seq)
+  (fold-left (lambda (x y) (cons y x)) null seq))
+(define (reverse-by-foldr seq)
+  (fold-right (lambda (x y) (append y (list x))) null seq))
