@@ -299,26 +299,3 @@
                            (queen-cols (dec k)))))))
   (queen-cols board-size))
 
-
-(define (queens2 board-size)
-  (define (safe? col positions)
-    (accumulate (lambda (a b) (and a b)) true
-                (map (lambda (p)
-            (not (or (in-bishop-route? p (car positions) board-size)
-                     (same-row? p (car positions)))))
-                     (cdr positions))))
-  (define (queen-cols k)
-    (let ((row-list (ennumerate-interval 1 board-size))
-          (empty-board null)
-          (adjoin-position (lambda (row col roq) (cons (list col row) roq))))
-      (if (=< k 0)
-          (list empty-board)
-          (filter (lambda (positions) (safe? k positions))
-                  (flatmap (lambda (rest-of-Q)
-                             (map (lambda (new-row)
-                                    (adjoin-position new-row k rest-of-Q))
-                                  row-list))
-                           (queen-cols (dec k)))))))
-  (queen-cols board-size))
-
-
