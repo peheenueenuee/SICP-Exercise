@@ -301,35 +301,16 @@
 
 
 (define (queens2 board-size)
-  (define (same-row? p1 p2) (= (cadr p1) (cadr p2)))
-  (define (same-col? p1 p2) (= (car p1) (car p2)))
-  (define (same-position? p1 p2) (and (same-row? p1 p2) (same-col? p1 p2)))
-  (define (bishop-route position)
-    (let ((cols (remove (car position) (ennumerate-interval 1 board-size)))
-          (o-col (car position))
-          (o-row (cadr position)))
-      (filter (lambda (p)
-                (not (or (< board-size (cadr p)) (> 1 (cadr p)))))
-              (flatmap (lambda (k) (list
-                        (list k (+ o-row (abs (- k o-col))))
-                        (list k (- o-row (abs (- k o-col))))))
-                       cols))))
-  (define (in-bishop-route? p1 p2)
-    (let ((p1-br (bishop-route p1)))
-      (accumulate (lambda (a b) (or a b)) false
-                  (map (lambda (p) (same-position? p2 p)) p1-br))))
-
   (define (safe? col positions)
     (accumulate (lambda (a b) (and a b)) true
                 (map (lambda (p)
-            (not (or (in-bishop-route? p (car positions))
+            (not (or (in-bishop-route? p (car positions) board-size)
                      (same-row? p (car positions)))))
-          (cdr positions))))
-
-  (let ((row-list (ennumerate-interval 1 8))
-        (empty-board null)
-        (adjoin-position (lambda (row col roq) (cons (list col row) roq))))
-    (define (queen-cols k)
+                     (cdr positions))))
+  (define (queen-cols k)
+    (let ((row-list (ennumerate-interval 1 8))
+          (empty-board null)
+          (adjoin-position (lambda (row col roq) (cons (list col row) roq))))
       (if (=< k 0)
           (list empty-board)
           (filter (lambda (positions) (safe? k positions))
@@ -337,7 +318,7 @@
                              (map (lambda (new-row)
                                     (adjoin-position new-row k rest-of-Q))
                                   row-list))
-                           (queen-cols (dec k))))))
-    (queen-cols board-size)))
+                           (queen-cols (dec k)))))))
+  (queen-cols board-size))
 
 
