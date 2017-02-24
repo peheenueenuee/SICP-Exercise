@@ -299,3 +299,25 @@
                            (queen-cols (dec k)))))))
   (queen-cols board-size))
 
+;(2.43)
+;Louis Reasoner, Eva Lu Ator
+(define (queens-by-louis board-size)
+  (define (safe? col positions)
+    (accumulate (lambda (a b) (and a b)) true
+                (map (lambda (p)
+                       (not (or (in-bishop-route? p (car positions) board-size)
+                                (same-row? p (car positions)))))
+                     (cdr positions))))
+  (define (queen-cols k)
+    (let ((row-list (ennumerate-interval 1 board-size))
+          (adjoin-position (lambda (row col roq) (cons (list col row) roq))))
+      (if (=< k 0)
+          (list null)
+          (filter (lambda (positions) (safe? k positions))
+                  (flatmap
+                   (lambda (new-row)
+                     (map (lambda (rest-of-queens)
+                            (adjoin-position new-row k rest-of-queens ))
+                          (queen-cols (dec k))))
+                   row-list)))))
+  (queen-cols board-size))
