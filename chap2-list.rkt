@@ -308,7 +308,7 @@
                      (same-row? p (car positions)))))
                      (cdr positions))))
   (define (queen-cols k)
-    (let ((row-list (ennumerate-interval 1 8))
+    (let ((row-list (ennumerate-interval 1 board-size))
           (empty-board null)
           (adjoin-position (lambda (row col roq) (cons (list col row) roq))))
       (if (=< k 0)
