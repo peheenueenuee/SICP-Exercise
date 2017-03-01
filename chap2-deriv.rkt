@@ -1,5 +1,6 @@
 (load "number.rkt")
 
+;(2.57)
 (define (variable? x) (symbol? x))
 (define (same-variable? v1 v2)
   (and (variable? v1) (variable? v2) (eq? v1 v2)))
@@ -11,7 +12,8 @@
         (else (list '+ a1 a2))))
 (define (sum? x) (and (pair? x) (eq? (car x) '+)))
 (define (addend s) (cadr s))
-(define (augend s) (caddr s))
+(define (augend s) (if (not (null? (cdddr s))) (cons '+ (cddr s))
+                       (caddr s)))
 
 (define (make-product a1 a2)
   (cond ((and (number? a1) (number? a2)) (* a1 a2))
@@ -22,7 +24,9 @@
         (else (list '* a1 a2))))
 (define (product? x) (and (pair? x) (eq? (car x) '*)))
 (define (multiplier p) (cadr p))
-(define (multiplicand p) (caddr p))
+(define (multiplicand p) (if (not (null? (cdddr p)))
+                             (cons '* (cddr p))
+                             (caddr p)))
 
 ;(2.56)
 (define (make-exponentiation base pow)
