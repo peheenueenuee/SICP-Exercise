@@ -8,16 +8,16 @@
         ((< x (car setx)) false)
         (else (element-of-set? x (cdr setx)))))
 (define (adjoin-set x setx)
-  (if (element-of-set? x setx)
-      setx
-      (cons x setx)))
+  (cond ((null? setx) (list x))
+        ((= x (car setx)) setx)
+        ((< x (car setx)) (cons x setx))
+        (else (cons (car setx) (adjoin-set x (cdr setx))))))
 (define (intersection-set set1 set2)
   (if (or (null? set1) (null? set2)) null
       (let ((x1 (car set1)) (x2 (car set2)))
         (cond ((= x1 x2) (cons x1 (intersection-set (cdr set1) (cdr set2))))
               ((< x1 x2) (intersection-set (cdr set1) set2))
               (else (intersection-set (cdr set2) set1))))))
-
 (define (union-set set1 set2)
   (cond ((and (null? set1) (null? set2)) '())
         ((null? set1) set2)
