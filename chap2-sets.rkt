@@ -12,14 +12,20 @@
 
 (define (element-of-set? x setx)
   (cond ((null? setx) false)
-        ((= x (car setx)) true)
-        ((< x (car setx)) false)
-        (else (element-of-set? x (cdr setx)))))
+        ((= x (entry setx)) true)
+        ((< x (entry setx)) (element-of-set? x (left-branch setx)))
+        (else (element-of-set? x (right-branch setx)))))
 (define (adjoin-set x setx)
-  (cond ((null? setx) (list x))
-        ((= x (car setx)) setx)
-        ((< x (car setx)) (cons x setx))
-        (else (cons (car setx) (adjoin-set x (cdr setx))))))
+  (cond ((null? setx) (make-tree x '() '()))
+        ((= x (entry setx)) setx)
+        ((< x (entry setx))
+         (make-tree (entry setx)
+                    (adjoin-set x (left-branch setx))
+                    (right-branch setx)))
+        (else (make-tree (entry setx)
+                         (left-branch setx)
+                         (adjoin-set x (right-branch setx))))))
+
 (define (intersection-set set1 set2)
   (if (or (null? set1) (null? set2)) null
       (let ((x1 (car set1)) (x2 (car set2)))
@@ -35,9 +41,13 @@
         ((< (car set1) (car set2))
          (cons (car set1) (union-set (cdr set1) set2)))
         (else (cons (car set2) (union-set (cdr set2) set1)))))
+
 (define (make-set xs)
-  (let ((ordered-list (quick-sort xs <)))
-    (union-set (cdr ordered-list) (list (car ordered-list)))))
+  (define (iter lis result)
+    (if (null? lis) result
+        (iter (cdr lis) (adjoin-set (car lis) result))))
+  (iter xs null))
+
 (define (quick-sort seq op)
   (let ((mutch-set (filter (lambda (x) (and (not (= (car seq) x))
                                            (op x (car seq))))
