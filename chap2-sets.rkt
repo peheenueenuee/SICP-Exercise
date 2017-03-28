@@ -3,6 +3,13 @@
 ;(2.59)
 ;(2.61)
 ;(2.62)
+;(2.63)
+(define (make-tree entry left right)
+  (list entry left right))
+(define (entry tree) (car tree))
+(define (left-branch tree) (cadr tree))
+(define (right-branch tree) (caddr tree))
+
 (define (element-of-set? x setx)
   (cond ((null? setx) false)
         ((= x (car setx)) true)
@@ -45,3 +52,5 @@
 
 (define setA (make-set '(1 2 3 4 5 6 7 8)))
 (define setB (make-set '(3 7 5 13 11 2)))
+
+
