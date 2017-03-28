@@ -62,5 +62,20 @@
 
 (define setA (make-set '(1 2 3 4 5 6 7 8)))
 (define setB (make-set '(3 7 5 13 11 2)))
+(define set216A (make-set '(7 3 9 1 5 11)))
+(define set216B (make-set '(3 1 7 5 9 11)))
+(define set216C (make-set '(5 3 9 1 7 11)))
 
+(define (tree->list1 tree)
+  (if (null? tree) '()
+      (append (tree->list1 (left-branch tree))
+              (cons (entry tree) (tree->list1 (right-branch tree))))))
 
+(define (tree->list2 tree)
+  (define (copy-to-list tr result-list)
+    (if (null? tr) result-list
+        (copy-to-list (left-branch tr)
+                      (cons (entry tr)
+                            (copy-to-list (right-branch tr)
+                                          result-list)))))
+  (copy-to-list tree '()))
