@@ -26,21 +26,22 @@
                          (left-branch setx)
                          (adjoin-set x (right-branch setx))))))
 
-(define (intersection-set set1 set2)
+(define (intersection-set-list set1 set2)
   (if (or (null? set1) (null? set2)) null
       (let ((x1 (car set1)) (x2 (car set2)))
-        (cond ((= x1 x2) (cons x1 (intersection-set (cdr set1) (cdr set2))))
-              ((< x1 x2) (intersection-set (cdr set1) set2))
-              (else (intersection-set (cdr set2) set1))))))
-(define (union-set set1 set2)
+        (cond ((= x1 x2)
+               (cons x1 (intersection-set-list (cdr set1) (cdr set2))))
+              ((< x1 x2) (intersection-set-list (cdr set1) set2))
+              (else (intersection-set-list (cdr set2) set1))))))
+(define (union-set-list set1 set2)
   (cond ((and (null? set1) (null? set2)) '())
         ((null? set1) set2)
         ((null? set2) set1)
         ((= (car set1) (car set2))
-         (cons (car set1) (union-set (cdr set1) (cdr set2))))
+         (cons (car set1) (union-set-list (cdr set1) (cdr set2))))
         ((< (car set1) (car set2))
-         (cons (car set1) (union-set (cdr set1) set2)))
-        (else (cons (car set2) (union-set (cdr set2) set1)))))
+         (cons (car set1) (union-set-list (cdr set1) set2)))
+        (else (cons (car set2) (union-set-list (cdr set2) set1)))))
 
 (define (make-set xs)
   (define (iter lis result)
@@ -80,7 +81,7 @@
                                           result-list)))))
   (copy-to-list tree '()))
 
-;(2.63)
+;(2.64)
 (define (partial-tree elts n)
   (if (= n 0) (cons '() elts)
       (let ((left-size (quotient (dec n) 2)))
@@ -96,7 +97,7 @@
                       remaining-elts))))))))
 (define (list->tree elements)
   (car (partial-tree elements (length elements))))
-;(2.63a)
+;(2.64a)
 ; partial-treeは指定された数の要素をリストからとり、木を作り、リストにconsして返す。
 ; 木を作るとき、要素数が0でない枝を作る必要があったら、
 ; 残りの要素をリストとしてpartial-treeをcallし、carをその枝とする。
@@ -105,3 +106,13 @@
 ; 2 次の先頭をエントリーに入れる。
 ; 3 左の枝とつりあう数の要素を右の枝に入れる。
 ; 4 枝を作るときは、枝の要素をリストとして1からやる。
+
+;(2.65)
+(define (union-set set1 set2)
+  (let ((lis1 (tree->list2 set1))
+        (lis2 (tree->list2 set2)))
+    (list->tree (union-set-list lis1 lis2))))
+(define (intersection-set set1 set2)
+  (let ((lis1 (tree->list2 set1))
+        (lis2 (tree->list2 set2)))
+    (list->tree (intersection-set-list lis1 lis2))))
