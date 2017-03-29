@@ -79,3 +79,29 @@
                             (copy-to-list (right-branch tr)
                                           result-list)))))
   (copy-to-list tree '()))
+
+;(2.63)
+(define (partial-tree elts n)
+  (if (= n 0) (cons '() elts)
+      (let ((left-size (quotient (dec n) 2)))
+        (let ((left-result (partial-tree elts left-size)))
+          (let ((left-tree (car left-result))
+                (non-left-elts (cdr left-result))
+                (right-size (- n (inc left-size))))
+            (let ((this-entry (car non-left-elts))
+                  (right-result (partial-tree (cdr non-left-elts) right-size)))
+              (let ((right-tree (car right-result))
+                    (remaining-elts (cdr right-result)))
+                (cons (make-tree this-entry left-tree right-tree)
+                      remaining-elts))))))))
+(define (list->tree elements)
+  (car (partial-tree elements (length elements))))
+;(2.63a)
+; partial-treeは指定された数の要素をリストからとり、木を作り、リストにconsして返す。
+; 木を作るとき、要素数が0でない枝を作る必要があったら、
+; 残りの要素をリストとしてpartial-treeをcallし、carをその枝とする。
+; list->treeはぜんたいとして次のように動作する
+; 1 リストの先頭から半分を左の枝に入れる。
+; 2 次の先頭をエントリーに入れる。
+; 3 左の枝とつりあう数の要素を右の枝に入れる。
+; 4 枝を作るときは、枝の要素をリストとして1からやる。
